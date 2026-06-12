@@ -20,6 +20,21 @@ Open the URL shown in the terminal (usually http://localhost:5173).
 | `npm run typecheck` | TypeScript only |
 | `npm run preview` | Preview production build |
 
+## Deploy to GitHub Pages
+
+The site is built for [https://ziyasensoy.github.io/Meesterproef/](https://ziyasensoy.github.io/Meesterproef/).
+
+1. Push to `main` — the [Deploy to GitHub Pages](.github/workflows/deploy.yml) workflow builds and publishes automatically.
+2. In the repo on GitHub: **Settings → Pages → Build and deployment → Source** → choose **GitHub Actions**.
+3. After the first successful run, the site is live at the URL above.
+
+To preview the production build locally with the same base path:
+
+```bash
+VITE_BASE_PATH=/Meesterproef/ npm run build
+npm run preview
+```
+
 ## Project structure
 
 ```
