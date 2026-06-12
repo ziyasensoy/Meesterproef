@@ -1,0 +1,13 @@
+export { OceanAnimation } from "./ocean";
+export type { OceanAnimationOptions } from "./ocean";
+export { ScrollReveal, ScrollProgress } from "./scroll";
+export type { ScrollRevealOptions } from "./scroll";
+export { AnimalHotspots } from "./hotspots";
+export { DescentController } from "./descent";
+export type { DescentControllerOptions } from "./descent";
+export { initSplitText, ExperimentalScroll } from "./experimental-scroll";
+export { applyLayerPalette, updatePaletteFromScroll } from "./palette";
+export { OceanAudio } from "./audio";
+export { LayerObserver } from "./layer-observer";
+export { SiteControls } from "./controls";
+export { MapController } from "./map";

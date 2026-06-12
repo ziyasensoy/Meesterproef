@@ -1,0 +1,1471 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The North Sea — An Interactive Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      crossorigin=""
+    ></script>
+  </head>
+  <body>
+    <canvas id="ocean-canvas" aria-hidden="true"></canvas>
+
+    <div class="surface-horizon" aria-hidden="true">
+      <div class="surface-horizon__sky"></div>
+      <div class="surface-horizon__line">
+        <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+          <path
+            class="surface-wave"
+            d="M0 20 Q150 5 300 20 T600 20 T900 20 T1200 20 L1200 40 L0 40 Z"
+            fill="rgba(126,200,227,0.5)"
+          />
+          <path
+            class="surface-wave surface-wave--2"
+            d="M0 25 Q150 10 300 25 T600 25 T900 25 T1200 25 L1200 40 L0 40 Z"
+            fill="rgba(100,180,210,0.3)"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <aside id="depth-hud" class="depth-hud" aria-live="polite">
+      <div class="depth-hud__line"></div>
+      <div class="depth-hud__info">
+        <span id="depth-value" class="depth-hud__value">0m</span>
+        <span id="depth-zone" class="depth-hud__zone">Above the Sea</span>
+      </div>
+    </aside>
+
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="sun-rays" aria-hidden="true"></div>
+    <div class="water-particles" aria-hidden="true"></div>
+
+    <div class="intro-veil" aria-hidden="true"></div>
+
+    <div class="color-bleed" aria-hidden="true"></div>
+
+    <div class="site-controls" id="site-controls">
+      <aside class="audio-hint" role="note" aria-label="Audio information">
+        <svg
+          class="audio-hint__icon"
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 14v3a2 2 0 0 0 2 2h1"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M20 14v3a2 2 0 0 1-2 2h-1"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M4 14a8 8 0 0 1 16 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M7 14v-2a5 5 0 0 1 10 0v2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <p class="audio-hint__text">
+          This site uses audio<br />Headphones are recommended.
+        </p>
+      </aside>
+      <div class="site-controls__actions">
+        <button
+          type="button"
+          id="btn-sound"
+          class="site-btn"
+          aria-pressed="false"
+        >
+          <svg
+            class="site-btn__icon"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <path d="M11 5L6 9H3v6h3l5 4V5z" fill="currentColor" />
+            <path
+              class="site-btn__icon-waves"
+              d="M15 9a4 4 0 0 1 0 6M18 7a7 7 0 0 1 0 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="btn-label">Turn on sound</span>
+        </button>
+        <button
+          type="button"
+          id="btn-fullscreen"
+          class="site-btn"
+          aria-pressed="false"
+        >
+          <svg
+            class="site-btn__icon"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            aria-hidden="true"
+          >
+            <path
+              class="site-btn__icon-expand"
+              d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              class="site-btn__icon-compress"
+              d="M9 4H4v5M20 9V4h-5M4 15v5h5M15 20h5v-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="btn-label">Fullscreen</span>
+        </button>
+      </div>
+    </div>
+
+    <main class="journey">
+      <!-- INTRO — pinned experimental sequence -->
+      <section
+        class="pin-sequence pin-sequence--intro"
+        style="--pin-vh: 300"
+        data-layer="intro"
+        data-speed="0.6"
+        data-meters-start="0"
+        data-meters-end="0"
+      >
+        <div class="pin-sequence__sticky">
+          <div class="intro-sky" aria-hidden="true"></div>
+          <div class="seagulls" aria-hidden="true">
+            <svg
+              class="seagull seagull--1"
+              viewBox="0 0 64 32"
+              width="52"
+              height="26"
+            >
+              <path
+                class="seagull-wing"
+                d="M4 18 Q16 6 32 16 Q48 6 60 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+              />
+              <ellipse cx="32" cy="18" rx="3.5" ry="2" fill="currentColor" />
+            </svg>
+            <svg
+              class="seagull seagull--2"
+              viewBox="0 0 64 32"
+              width="40"
+              height="20"
+            >
+              <path
+                class="seagull-wing"
+                d="M4 18 Q16 6 32 16 Q48 6 60 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <ellipse cx="32" cy="18" rx="3" ry="1.8" fill="currentColor" />
+            </svg>
+            <svg
+              class="seagull seagull--3"
+              viewBox="0 0 64 32"
+              width="46"
+              height="23"
+            >
+              <path
+                class="seagull-wing"
+                d="M4 18 Q16 6 32 16 Q48 6 60 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.1"
+                stroke-linecap="round"
+              />
+              <ellipse cx="32" cy="18" rx="3.2" ry="1.9" fill="currentColor" />
+            </svg>
+            <svg
+              class="seagull seagull--4"
+              viewBox="0 0 64 32"
+              width="36"
+              height="18"
+            >
+              <path
+                class="seagull-wing"
+                d="M4 18 Q16 6 32 16 Q48 6 60 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <ellipse cx="32" cy="18" rx="2.8" ry="1.6" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="intro-bg-text" aria-hidden="true">NORTH SEA</div>
+          <div class="layer__content layer__content--intro">
+            <h1
+              class="title-hero"
+              data-split="chars"
+              aria-label="The North Sea"
+            >
+              The North Sea
+            </h1>
+            <p class="intro-line intro-line--1 text-large">
+              <span class="intro-line-inner"
+                >When you look at the North Sea, you see water.</span
+              >
+            </p>
+            <p class="intro-line intro-line--2 text-large">
+              <span class="intro-line-inner"
+                >But beneath the surface lies another world.</span
+              >
+            </p>
+            <p class="text-dive text-dive--pin">
+              You break through the surface.
+            </p>
+            <p class="text-dive text-dive--sub text-dive--sub-pin">
+              The light shifts. The world goes quiet.
+            </p>
+          </div>
+          <button class="scroll-hint" aria-label="Scroll to begin">
+            <span class="scroll-hint__label">Descend</span>
+            <span class="scroll-hint__line"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- LAYER 1 — SURFACE -->
+      <section
+        class="layer layer--surface layer--split layer--offset-right"
+        data-layer="surface"
+        data-speed="1"
+        data-meters-start="8"
+        data-meters-end="20"
+      >
+        <span class="layer-num" aria-hidden="true">01</span>
+        <div class="layer__content">
+          <span class="layer-label" data-scrub="slide-left">01 / Surface</span>
+          <h2 class="title-section" data-split="words" data-scrub="blur-in">
+            Above the surface, the North Sea is one of Europe's busiest regions.
+          </h2>
+          <div class="fact-grid" data-reveal-stagger>
+            <div class="fact-card" data-reveal-child>
+              <h3>International Shipping</h3>
+              <p>
+                Over 400,000 ships cross these waters each year, carrying goods
+                between continents and connecting global trade routes.
+              </p>
+            </div>
+            <div class="fact-card" data-reveal-child>
+              <h3>Offshore Wind Energy</h3>
+              <p>
+                The North Sea hosts some of the world's largest wind farms,
+                generating clean electricity for millions of European homes.
+              </p>
+            </div>
+            <div class="fact-card" data-reveal-child>
+              <h3>Oil &amp; Gas</h3>
+              <p>
+                For decades, offshore platforms have extracted fossil fuels from
+                beneath the seabed, shaping the region's economy.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="layer__visuals" aria-hidden="true">
+          <div class="scene scene--surface" data-reveal-stagger>
+            <!-- Cargo Ship -->
+            <svg
+              class="illustration ship"
+              data-reveal-child
+              viewBox="0 0 280 130"
+            >
+              <defs>
+                <linearGradient id="shipHullGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#4a5568" />
+                  <stop offset="55%" stop-color="#374151" />
+                  <stop offset="100%" stop-color="#c0392b" />
+                </linearGradient>
+              </defs>
+              <ellipse
+                cx="140"
+                cy="118"
+                rx="120"
+                ry="7"
+                fill="rgba(0,0,0,0.1)"
+              />
+              <!-- Hull -->
+              <path
+                d="M20 88 L35 72 L250 72 L265 88 L265 98 L20 98 Z"
+                fill="url(#shipHullGrad)"
+              />
+              <line
+                x1="20"
+                y1="88"
+                x2="265"
+                y2="88"
+                stroke="rgba(255,255,255,0.15)"
+                stroke-width="1"
+              />
+              <!-- Bow -->
+              <path d="M20 88 L8 92 L8 98 L20 98 Z" fill="#374151" />
+              <!-- Containers row 1 -->
+              <rect
+                x="45"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#e8c547"
+              />
+              <rect
+                x="69"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#3498db"
+              />
+              <rect
+                x="93"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#e74c3c"
+              />
+              <rect
+                x="117"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#e8c547"
+              />
+              <rect
+                x="141"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#3498db"
+              />
+              <rect
+                x="165"
+                y="52"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#2ecc71"
+              />
+              <!-- Containers row 2 -->
+              <rect
+                x="57"
+                y="32"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#3498db"
+              />
+              <rect
+                x="81"
+                y="32"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#e74c3c"
+              />
+              <rect
+                x="105"
+                y="32"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#e8c547"
+              />
+              <rect
+                x="129"
+                y="32"
+                width="22"
+                height="20"
+                rx="1"
+                fill="#9b59b6"
+              />
+              <!-- Bridge / superstructure -->
+              <rect
+                x="195"
+                y="38"
+                width="55"
+                height="34"
+                rx="2"
+                fill="#ecf0f1"
+              />
+              <rect
+                x="200"
+                y="42"
+                width="14"
+                height="10"
+                rx="1"
+                fill="#3498db"
+                opacity="0.7"
+              />
+              <rect
+                x="218"
+                y="42"
+                width="14"
+                height="10"
+                rx="1"
+                fill="#3498db"
+                opacity="0.7"
+              />
+              <rect
+                x="236"
+                y="42"
+                width="10"
+                height="10"
+                rx="1"
+                fill="#3498db"
+                opacity="0.7"
+              />
+              <rect
+                x="210"
+                y="22"
+                width="30"
+                height="16"
+                rx="2"
+                fill="#bdc3c7"
+              />
+              <!-- Funnel -->
+              <rect
+                x="225"
+                y="8"
+                width="14"
+                height="14"
+                rx="1"
+                fill="#2c3e50"
+              />
+              <rect x="227" y="6" width="10" height="4" rx="1" fill="#c0392b" />
+              <!-- Crane -->
+              <line
+                x1="38"
+                y1="52"
+                x2="38"
+                y2="28"
+                stroke="#7f8c8d"
+                stroke-width="2"
+              />
+              <line
+                x1="38"
+                y1="28"
+                x2="58"
+                y2="38"
+                stroke="#7f8c8d"
+                stroke-width="2"
+              />
+            </svg>
+
+            <!-- Wind Farm -->
+            <svg
+              class="illustration wind-farm"
+              data-reveal-child
+              viewBox="0 0 300 200"
+            >
+              <ellipse
+                cx="150"
+                cy="185"
+                rx="130"
+                ry="10"
+                fill="rgba(0,0,0,0.06)"
+              />
+              <g class="turbine turbine--1">
+                <rect x="68" y="80" width="6" height="100" fill="#d0d8e0" />
+                <g class="turbine-blades">
+                  <ellipse
+                    cx="71"
+                    cy="78"
+                    rx="35"
+                    ry="6"
+                    fill="#eef2f6"
+                    transform="rotate(0 71 78)"
+                  />
+                  <ellipse
+                    cx="71"
+                    cy="78"
+                    rx="35"
+                    ry="6"
+                    fill="#eef2f6"
+                    transform="rotate(120 71 78)"
+                  />
+                  <ellipse
+                    cx="71"
+                    cy="78"
+                    rx="35"
+                    ry="6"
+                    fill="#eef2f6"
+                    transform="rotate(240 71 78)"
+                  />
+                </g>
+                <circle cx="71" cy="78" r="4" fill="#a0aab4" />
+              </g>
+              <g class="turbine turbine--2">
+                <rect x="148" y="60" width="6" height="120" fill="#d0d8e0" />
+                <g class="turbine-blades">
+                  <ellipse
+                    cx="151"
+                    cy="58"
+                    rx="40"
+                    ry="7"
+                    fill="#eef2f6"
+                    transform="rotate(0 151 58)"
+                  />
+                  <ellipse
+                    cx="151"
+                    cy="58"
+                    rx="40"
+                    ry="7"
+                    fill="#eef2f6"
+                    transform="rotate(120 151 58)"
+                  />
+                  <ellipse
+                    cx="151"
+                    cy="58"
+                    rx="40"
+                    ry="7"
+                    fill="#eef2f6"
+                    transform="rotate(240 151 58)"
+                  />
+                </g>
+                <circle cx="151" cy="58" r="4" fill="#a0aab4" />
+              </g>
+              <g class="turbine turbine--3">
+                <rect x="228" y="90" width="6" height="90" fill="#d0d8e0" />
+                <g class="turbine-blades">
+                  <ellipse
+                    cx="231"
+                    cy="88"
+                    rx="30"
+                    ry="5"
+                    fill="#eef2f6"
+                    transform="rotate(0 231 88)"
+                  />
+                  <ellipse
+                    cx="231"
+                    cy="88"
+                    rx="30"
+                    ry="5"
+                    fill="#eef2f6"
+                    transform="rotate(120 231 88)"
+                  />
+                  <ellipse
+                    cx="231"
+                    cy="88"
+                    rx="30"
+                    ry="5"
+                    fill="#eef2f6"
+                    transform="rotate(240 231 88)"
+                  />
+                </g>
+                <circle cx="231" cy="88" r="4" fill="#a0aab4" />
+              </g>
+            </svg>
+
+            <!-- Oil Platform -->
+            <svg
+              class="illustration oil-platform"
+              data-reveal-child
+              viewBox="0 -15 160 215"
+            >
+              <defs>
+                <linearGradient id="legGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#6a7580" />
+                  <stop offset="100%" stop-color="#9aa4ae" />
+                </linearGradient>
+              </defs>
+              <ellipse cx="80" cy="188" rx="65" ry="7" fill="rgba(0,0,0,0.1)" />
+              <!-- Legs with cross-bracing -->
+              <line
+                x1="35"
+                y1="70"
+                x2="25"
+                y2="185"
+                stroke="url(#legGrad)"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
+              <line
+                x1="125"
+                y1="70"
+                x2="135"
+                y2="185"
+                stroke="url(#legGrad)"
+                stroke-width="5"
+                stroke-linecap="round"
+              />
+              <line
+                x1="60"
+                y1="70"
+                x2="50"
+                y2="185"
+                stroke="url(#legGrad)"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <line
+                x1="100"
+                y1="70"
+                x2="110"
+                y2="185"
+                stroke="url(#legGrad)"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <line
+                x1="30"
+                y1="120"
+                x2="130"
+                y2="100"
+                stroke="#8a949e"
+                stroke-width="2"
+              />
+              <line
+                x1="30"
+                y1="150"
+                x2="130"
+                y2="130"
+                stroke="#8a949e"
+                stroke-width="2"
+              />
+              <line
+                x1="45"
+                y1="100"
+                x2="115"
+                y2="140"
+                stroke="#8a949e"
+                stroke-width="2"
+              />
+              <line
+                x1="115"
+                y1="100"
+                x2="45"
+                y2="140"
+                stroke="#8a949e"
+                stroke-width="2"
+              />
+              <!-- Deck levels -->
+              <rect
+                x="20"
+                y="62"
+                width="120"
+                height="8"
+                rx="1"
+                fill="#8a949e"
+              />
+              <rect
+                x="30"
+                y="48"
+                width="100"
+                height="8"
+                rx="1"
+                fill="#9aa4ae"
+              />
+              <rect x="40" y="34" width="80" height="8" rx="1" fill="#aab4be" />
+              <!-- Living quarters -->
+              <rect
+                x="50"
+                y="14"
+                width="60"
+                height="20"
+                rx="2"
+                fill="#e67e22"
+              />
+              <rect x="55" y="18" width="10" height="8" rx="1" fill="#fdebd0" />
+              <rect x="70" y="18" width="10" height="8" rx="1" fill="#fdebd0" />
+              <rect x="85" y="18" width="10" height="8" rx="1" fill="#fdebd0" />
+              <rect x="100" y="18" width="6" height="8" rx="1" fill="#fdebd0" />
+              <!-- Helipad -->
+              <circle
+                cx="80"
+                cy="8"
+                r="12"
+                fill="#f1c40f"
+                stroke="#d4ac0d"
+                stroke-width="1.5"
+              />
+              <circle
+                cx="80"
+                cy="8"
+                r="8"
+                fill="none"
+                stroke="#d4ac0d"
+                stroke-width="1"
+                stroke-dasharray="3 2"
+              />
+              <text
+                x="80"
+                y="11"
+                text-anchor="middle"
+                font-size="7"
+                font-weight="bold"
+                fill="#d4ac0d"
+                font-family="sans-serif"
+              >
+                H
+              </text>
+              <!-- Derrick / drill tower -->
+              <rect x="76" y="-10" width="8" height="22" fill="#c0392b" />
+              <line
+                x1="72"
+                y1="-10"
+                x2="88"
+                y2="-10"
+                stroke="#c0392b"
+                stroke-width="3"
+              />
+              <line
+                x1="76"
+                y1="-10"
+                x2="70"
+                y2="14"
+                stroke="#c0392b"
+                stroke-width="2"
+              />
+              <line
+                x1="84"
+                y1="-10"
+                x2="90"
+                y2="14"
+                stroke="#c0392b"
+                stroke-width="2"
+              />
+              <!-- Flare stack -->
+              <rect x="118" y="40" width="4" height="18" fill="#7f8c8d" />
+              <ellipse
+                cx="120"
+                cy="36"
+                rx="4"
+                ry="6"
+                fill="#ff6b35"
+                opacity="0.8"
+                class="platform-flare"
+              />
+              <!-- Crane -->
+              <line
+                x1="25"
+                y1="62"
+                x2="25"
+                y2="40"
+                stroke="#7f8c8d"
+                stroke-width="2"
+              />
+              <line
+                x1="25"
+                y1="40"
+                x2="45"
+                y2="50"
+                stroke="#7f8c8d"
+                stroke-width="2"
+              />
+              <!-- Safety railings -->
+              <line
+                x1="20"
+                y1="55"
+                x2="140"
+                y2="55"
+                stroke="#bdc3c7"
+                stroke-width="1"
+              />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYER 2 — ANIMALS AND NATURE -->
+      <section
+        class="layer layer--nature layer--offset-left"
+        data-layer="nature"
+        data-speed="0.8"
+        data-meters-start="20"
+        data-meters-end="50"
+      >
+        <span class="layer-num" aria-hidden="true">02</span>
+        <div class="layer__visuals" aria-hidden="true">
+          <div class="scene scene--underwater" data-reveal-stagger>
+            <!-- Seal -->
+            <button
+              class="hotspot hotspot--seal"
+              data-hotspot
+              data-reveal-child
+              data-title="Harbour Seal"
+              data-body="Harbour seals are among the most common marine mammals in the North Sea. They hunt fish and crustaceans in coastal waters and often rest on sandbanks. Protected since the 1970s, their populations have slowly recovered across the region."
+              aria-label="Learn about harbour seals"
+            >
+              <svg
+                class="illustration animal animal--seal"
+                viewBox="0 0 140 80"
+              >
+                <ellipse cx="70" cy="55" rx="55" ry="22" fill="#8a9aaa" />
+                <ellipse cx="70" cy="50" rx="50" ry="18" fill="#a0b0c0" />
+                <circle cx="110" cy="42" r="14" fill="#a0b0c0" />
+                <circle cx="115" cy="38" r="3" fill="#2a2a2a" />
+                <circle cx="116" cy="37" r="1" fill="#fff" />
+                <ellipse
+                  cx="55"
+                  cy="38"
+                  rx="8"
+                  ry="5"
+                  fill="#8a9aaa"
+                  transform="rotate(-20 55 38)"
+                />
+                <ellipse
+                  cx="85"
+                  cy="38"
+                  rx="8"
+                  ry="5"
+                  fill="#8a9aaa"
+                  transform="rotate(20 85 38)"
+                />
+                <path d="M25 50 Q15 45 10 55 Q20 58 25 50" fill="#a0b0c0" />
+                <path d="M25 58 Q15 63 10 53 Q20 50 25 58" fill="#a0b0c0" />
+              </svg>
+              <span class="hotspot-pulse"></span>
+            </button>
+
+            <!-- Dolphin -->
+            <button
+              class="hotspot hotspot--dolphin"
+              data-hotspot
+              data-reveal-child
+              data-title="Common Dolphin"
+              data-body="Common dolphins travel in pods through the open North Sea, communicating with clicks and whistles. They feed on herring and mackerel, using echolocation to navigate and hunt in the murky depths."
+              aria-label="Learn about common dolphins"
+            >
+              <svg
+                class="illustration animal animal--dolphin"
+                viewBox="0 0 160 70"
+              >
+                <ellipse cx="80" cy="38" rx="60" ry="18" fill="#6a8aaa" />
+                <path
+                  d="M130 30 Q155 20 160 35 Q150 45 130 40"
+                  fill="#6a8aaa"
+                />
+                <path d="M30 30 Q10 15 5 35 Q15 45 35 40" fill="#5a7a9a" />
+                <polygon points="80,15 85,5 90,15" fill="#5a7a9a" />
+                <circle cx="115" cy="32" r="3" fill="#1a1a2a" />
+                <ellipse
+                  cx="80"
+                  cy="42"
+                  rx="45"
+                  ry="8"
+                  fill="#7a9aba"
+                  opacity="0.5"
+                />
+              </svg>
+              <span class="hotspot-pulse"></span>
+            </button>
+
+            <!-- Crab -->
+            <button
+              class="hotspot hotspot--crab"
+              data-hotspot
+              data-reveal-child
+              data-title="Shore Crab"
+              data-body="The shore crab thrives in shallow North Sea waters and along rocky coastlines. As both predator and prey, it plays a vital role in the coastal food web, feeding on algae and small invertebrates."
+              aria-label="Learn about shore crabs"
+            >
+              <svg class="illustration animal animal--crab" viewBox="0 0 90 70">
+                <ellipse cx="45" cy="40" rx="25" ry="18" fill="#c0392b" />
+                <ellipse cx="45" cy="38" rx="22" ry="15" fill="#e74c3c" />
+                <circle cx="38" cy="32" r="3" fill="#1a1a1a" />
+                <circle cx="52" cy="32" r="3" fill="#1a1a1a" />
+                <path
+                  d="M20 35 L5 20 M20 42 L2 42 M20 49 L5 58"
+                  stroke="#c0392b"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M70 35 L85 20 M70 42 L88 42 M70 49 L85 58"
+                  stroke="#c0392b"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M35 55 L30 65 M45 57 L45 68 M55 55 L60 65"
+                  stroke="#c0392b"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span class="hotspot-pulse"></span>
+            </button>
+
+            <!-- Fish -->
+            <button
+              class="hotspot hotspot--fish"
+              data-hotspot
+              data-reveal-child
+              data-title="North Sea Herring"
+              data-body="Herring form enormous shoals that migrate through the North Sea in seasonal cycles. These silvery fish have sustained fishing communities for centuries and remain a cornerstone of the marine food chain."
+              aria-label="Learn about North Sea herring"
+            >
+              <svg
+                class="illustration animal animal--fish"
+                viewBox="0 0 100 50"
+              >
+                <ellipse cx="45" cy="25" rx="35" ry="12" fill="#c0d0e0" />
+                <path d="M10 25 Q5 15 2 25 Q5 35 10 25" fill="#a0b8cc" />
+                <polygon points="80,25 98,15 98,35" fill="#a0b8cc" />
+                <circle cx="60" cy="22" r="2.5" fill="#1a2030" />
+                <path
+                  d="M30 20 Q45 15 60 20"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.3)"
+                  stroke-width="1"
+                />
+              </svg>
+              <span class="hotspot-pulse"></span>
+            </button>
+          </div>
+        </div>
+        <div class="layer__content">
+          <span class="layer-label" data-scrub="slide-right"
+            >02 / Life Below</span
+          >
+          <h2 class="title-section" data-split="words" data-scrub="scale-up">
+            A living ecosystem thrives beneath the waves.
+          </h2>
+          <p class="text-body text-body--mono" data-scrub="slide-left">
+            Click the creatures — each one holds a story.
+          </p>
+        </div>
+      </section>
+
+      <!-- LAYER 3 — POLLUTION -->
+      <section
+        class="layer layer--pollution layer--split layer--offset-right"
+        data-layer="pollution"
+        data-speed="0.7"
+        data-meters-start="50"
+        data-meters-end="75"
+      >
+        <span class="layer-num" aria-hidden="true">03</span>
+        <div class="layer__content">
+          <span class="layer-label" data-scrub="slide-left">03 / Traces</span>
+          <h2 class="title-section" data-split="words" data-scrub="clip-up">
+            Human activity leaves traces beneath the surface.
+          </h2>
+          <div class="fact-grid fact-grid--compact" data-reveal-stagger>
+            <div class="fact-card fact-card--muted" data-reveal-child>
+              <h3>Plastic Pollution</h3>
+              <p>
+                Every year, thousands of tonnes of plastic enter the North Sea —
+                from bottles to microplastics invisible to the eye.
+              </p>
+            </div>
+            <div class="fact-card fact-card--muted" data-reveal-child>
+              <h3>Ghost Nets</h3>
+              <p>
+                Lost fishing gear continues to trap marine life long after it
+                falls overboard, drifting silently through the water.
+              </p>
+            </div>
+            <div class="fact-card fact-card--muted" data-reveal-child>
+              <h3>Noise Pollution</h3>
+              <p>
+                Ship engines and construction noise disrupt the communication
+                and navigation of whales, dolphins, and other species.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="layer__visuals" aria-hidden="true">
+          <div class="scene scene--pollution" data-reveal-stagger>
+            <svg
+              class="illustration debris debris--bottle"
+              data-reveal-child
+              viewBox="0 0 40 80"
+            >
+              <rect
+                x="12"
+                y="10"
+                width="16"
+                height="55"
+                rx="4"
+                fill="rgba(100,180,120,0.6)"
+                stroke="rgba(80,160,100,0.8)"
+                stroke-width="1"
+              />
+              <rect
+                x="14"
+                y="5"
+                width="12"
+                height="8"
+                rx="2"
+                fill="rgba(80,160,100,0.7)"
+              />
+            </svg>
+            <svg
+              class="illustration debris debris--net"
+              data-reveal-child
+              viewBox="0 0 140 100"
+            >
+              <path
+                d="M10 15 L130 15 L110 85 L30 85 Z"
+                fill="rgba(180,190,200,0.08)"
+                stroke="rgba(200,210,220,0.5)"
+                stroke-width="2"
+              />
+              <line
+                x1="10"
+                y1="15"
+                x2="30"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="35"
+                y1="15"
+                x2="40"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="60"
+                y1="15"
+                x2="60"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="85"
+                y1="15"
+                x2="80"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="110"
+                y1="15"
+                x2="100"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="130"
+                y1="15"
+                x2="110"
+                y2="85"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="10"
+                y1="30"
+                x2="130"
+                y2="30"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="10"
+                y1="50"
+                x2="130"
+                y2="50"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <line
+                x1="10"
+                y1="70"
+                x2="130"
+                y2="70"
+                stroke="rgba(200,210,220,0.35)"
+                stroke-width="1"
+              />
+              <!-- Tangled float line -->
+              <path
+                d="M70 15 Q90 40 75 60 Q60 75 45 85"
+                fill="none"
+                stroke="rgba(160,170,180,0.4)"
+                stroke-width="1.5"
+              />
+              <circle
+                cx="45"
+                cy="85"
+                r="4"
+                fill="rgba(200,210,220,0.3)"
+                stroke="rgba(200,210,220,0.5)"
+                stroke-width="1"
+              />
+            </svg>
+            <svg
+              class="illustration debris debris--bag"
+              data-reveal-child
+              viewBox="0 0 60 70"
+            >
+              <path
+                d="M15 20 Q30 5 45 20 L50 60 Q30 68 10 60 Z"
+                fill="rgba(180,180,190,0.5)"
+                stroke="rgba(160,160,170,0.6)"
+                stroke-width="1"
+              />
+              <path
+                d="M20 20 Q30 12 40 20"
+                fill="none"
+                stroke="rgba(160,160,170,0.6)"
+                stroke-width="2"
+              />
+            </svg>
+            <svg
+              class="illustration debris debris--micro"
+              data-reveal-child
+              viewBox="0 0 30 30"
+            >
+              <rect
+                x="5"
+                y="8"
+                width="20"
+                height="14"
+                rx="2"
+                fill="rgba(255,200,100,0.4)"
+                transform="rotate(15 15 15)"
+              />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYER 4 — CABLES AND PIPELINES -->
+      <section
+        class="layer layer--infrastructure layer--offset-left"
+        data-layer="infrastructure"
+        data-speed="0.5"
+        data-meters-start="75"
+        data-meters-end="120"
+      >
+        <span class="layer-num" aria-hidden="true">04</span>
+        <div class="layer__visuals" aria-hidden="true">
+          <div class="scene scene--seabed" data-reveal-stagger>
+            <div class="seabed-ground" data-reveal-child></div>
+            <svg
+              class="illustration cables"
+              data-reveal-child
+              viewBox="0 0 800 200"
+            >
+              <path
+                class="cable cable--internet"
+                d="M0 80 Q200 60 400 90 T800 70"
+                fill="none"
+                stroke="#3a5a8a"
+                stroke-width="4"
+              />
+              <path
+                class="cable cable--power"
+                d="M0 120 Q200 140 400 110 T800 130"
+                fill="none"
+                stroke="#8a6a3a"
+                stroke-width="4"
+              />
+              <path
+                class="cable cable--gas"
+                d="M0 160 Q200 150 400 170 T800 155"
+                fill="none"
+                stroke="#5a8a6a"
+                stroke-width="4"
+              />
+              <circle class="cable-node" cx="200" cy="72" r="5" fill="#4af" />
+              <circle class="cable-node" cx="400" cy="88" r="5" fill="#4af" />
+              <circle class="cable-node" cx="600" cy="74" r="5" fill="#4af" />
+              <circle class="cable-node" cx="200" cy="138" r="5" fill="#fa4" />
+              <circle class="cable-node" cx="500" cy="118" r="5" fill="#fa4" />
+              <circle class="cable-node" cx="700" cy="128" r="5" fill="#fa4" />
+              <circle class="cable-node" cx="300" cy="158" r="5" fill="#4f8" />
+              <circle class="cable-node" cx="550" cy="168" r="5" fill="#4f8" />
+            </svg>
+          </div>
+        </div>
+        <div class="layer__content">
+          <span class="layer-label" data-scrub="slide-right"
+            >04 / Deep Network</span
+          >
+          <h2 class="title-section" data-split="words" data-scrub="blur-in">
+            Deep beneath the waves lies an invisible infrastructure connecting
+            countries and powering millions of homes.
+          </h2>
+          <div class="fact-grid fact-grid--compact" data-reveal-stagger>
+            <div class="fact-card fact-card--glow" data-reveal-child>
+              <h3>Internet Cables</h3>
+              <p>
+                Subsea fibre-optic cables carry over 99% of international data
+                traffic between Europe and the world.
+              </p>
+            </div>
+            <div class="fact-card fact-card--glow" data-reveal-child>
+              <h3>Power Cables</h3>
+              <p>
+                High-voltage lines link offshore wind farms to national grids,
+                delivering renewable energy ashore.
+              </p>
+            </div>
+            <div class="fact-card fact-card--glow" data-reveal-child>
+              <h3>Gas Pipelines</h3>
+              <p>
+                An extensive network of pipelines transports natural gas between
+                nations beneath the seabed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYER 5 — POLITICAL MAP -->
+      <section
+        class="layer layer--map"
+        data-layer="politics"
+        data-speed="0.85"
+        data-meters-start="85"
+        data-meters-end="70"
+      >
+        <span class="layer-num" aria-hidden="true">05</span>
+        <div class="layer__content layer__content--map">
+          <span class="layer-label" data-scrub="slide-left"
+            >05 / Borders &amp; Power</span
+          >
+          <h2
+            class="title-section title-section--map"
+            data-split="words"
+            data-scrub="blur-in"
+          >
+            The North Sea is not one country — it is many interests sharing the
+            same water.
+          </h2>
+          <p
+            class="text-body text-body--mono map-instruction"
+            data-scrub="slide-left"
+          >
+            Explore the map — click any marker to learn more.
+          </p>
+        </div>
+
+        <div class="map-container" data-reveal-stagger>
+          <nav class="map-legend" aria-label="Map categories" data-reveal-child>
+            <button
+              type="button"
+              class="map-filter is-active"
+              data-map-filter="all"
+            >
+              All
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--borders"
+              data-map-filter="borders"
+            >
+              Borders
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--fishing"
+              data-map-filter="fishing"
+            >
+              Fishing
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--energy"
+              data-map-filter="energy"
+            >
+              Energy
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--environment"
+              data-map-filter="environment"
+            >
+              Environment
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--security"
+              data-map-filter="security"
+            >
+              Security
+            </button>
+            <button
+              type="button"
+              class="map-filter map-filter--trade"
+              data-map-filter="trade"
+            >
+              Trade
+            </button>
+          </nav>
+
+          <div class="map-wrapper" data-reveal-child>
+            <div
+              id="north-sea-leaflet"
+              class="north-sea-leaflet"
+              role="application"
+              aria-label="Satellite map of the North Sea region"
+            ></div>
+            <div class="map-vignette" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYER 6 — CONNECTION -->
+      <section
+        class="layer layer--connection layer--offset-right"
+        data-layer="connection"
+        data-speed="0.9"
+        data-meters-start="120"
+        data-meters-end="60"
+      >
+        <span class="layer-num" aria-hidden="true">06</span>
+        <div class="layer__visuals" aria-hidden="true">
+          <div class="scene scene--overview" data-reveal-stagger>
+            <div class="overview-ring overview-ring--1" data-reveal-child></div>
+            <div class="overview-ring overview-ring--2" data-reveal-child></div>
+            <div class="overview-ring overview-ring--3" data-reveal-child></div>
+            <div class="overview-ring overview-ring--4" data-reveal-child></div>
+            <div class="overview-center" data-reveal-child>
+              <svg viewBox="0 0 80 80">
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="35"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.3)"
+                  stroke-width="1"
+                />
+                <circle cx="40" cy="40" r="20" fill="rgba(126,200,227,0.2)" />
+                <circle cx="40" cy="40" r="8" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="layer__content">
+          <span class="layer-label" data-scrub="slide-left"
+            >06 / Connection</span
+          >
+          <h2 class="title-section" data-split="words" data-scrub="scale-up">
+            Everything in the North Sea is connected.
+          </h2>
+          <div class="connection-list" data-reveal-stagger>
+            <div class="connection-item" data-reveal-child>
+              <span class="connection-dot connection-dot--trade"></span>
+              <p>
+                Ships carry goods that sustain economies across the continent.
+              </p>
+            </div>
+            <div class="connection-item" data-reveal-child>
+              <span class="connection-dot connection-dot--energy"></span>
+              <p>
+                Wind farms and pipelines power homes from Scotland to the
+                Netherlands.
+              </p>
+            </div>
+            <div class="connection-item" data-reveal-child>
+              <span class="connection-dot connection-dot--nature"></span>
+              <p>
+                Seals, fish, and seabirds form a web of life that spans national
+                borders.
+              </p>
+            </div>
+            <div class="connection-item" data-reveal-child>
+              <span class="connection-dot connection-dot--infra"></span>
+              <p>
+                Cables and pipelines link nations in ways most people never see.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL MESSAGE -->
+      <section
+        class="layer layer--finale layer--finale-exp"
+        data-layer="finale"
+        data-speed="0.3"
+        data-meters-start="60"
+        data-meters-end="0"
+      >
+        <div class="layer__content layer__content--centered">
+          <h2 class="title-finale" data-split="words" data-scrub="blur-in">
+            The North Sea is more than water.
+          </h2>
+          <div class="finale-lines" data-reveal-stagger>
+            <p class="finale-line" data-reveal-child>A source of energy.</p>
+            <p class="finale-line" data-reveal-child>A route for trade.</p>
+            <p class="finale-line" data-reveal-child>A home for wildlife.</p>
+          </div>
+          <p class="finale-thanks" data-reveal>
+            Thank you for exploring the North Sea.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Info Card Overlay -->
+    <div id="info-overlay" class="info-overlay" aria-hidden="true"></div>
+    <div
+      id="info-card"
+      class="info-card"
+      role="dialog"
+      aria-labelledby="info-card-title"
+      aria-modal="true"
+    >
+      <button id="info-card-close" class="info-card__close" aria-label="Close">
+        &times;
+      </button>
+      <h3 id="info-card-title" class="info-card__title"></h3>
+      <p id="info-card-body" class="info-card__body"></p>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
