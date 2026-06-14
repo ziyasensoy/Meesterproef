@@ -169,17 +169,17 @@ export default function JourneyPage() {
                     </p>
                   </div>
                   <div className="fact-card" data-reveal-child>
-                    <h3 data-i18n="layers.surface.fact2Title">Offshore Wind Energy</h3>
-                    <p data-i18n="layers.surface.fact2Body">
-                      The North Sea hosts some of the world's largest wind farms,
-                      generating clean electricity for millions of European homes.
-                    </p>
-                  </div>
-                  <div className="fact-card" data-reveal-child>
                     <h3 data-i18n="layers.surface.fact3Title">Oil &amp; Gas</h3>
                     <p data-i18n="layers.surface.fact3Body">
                       For decades, offshore platforms have extracted fossil fuels from
                       beneath the seabed, shaping the region's economy.
+                    </p>
+                  </div>
+                  <div className="fact-card" data-reveal-child>
+                    <h3 data-i18n="layers.surface.fact2Title">Offshore Wind Energy</h3>
+                    <p data-i18n="layers.surface.fact2Body">
+                      The North Sea hosts some of the world's largest wind farms,
+                      generating clean electricity for millions of European homes.
                     </p>
                   </div>
                 </div>

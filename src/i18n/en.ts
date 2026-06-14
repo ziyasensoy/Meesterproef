@@ -36,8 +36,8 @@ const en = {
   intro: {
     title: "The North Sea",
     statCountries: "7 nations",
-    statArea: "570,000 km²",
-    statDepth: "40 m deep",
+    statArea: "575,000 km²",
+    statDepth: "≈ 40 m deep (the Netherlands)",
     tagline: "An interactive journey",
     statsAria: "North Sea facts",
     scrollToStart: "Scroll down",
@@ -97,7 +97,7 @@ const en = {
         "Lost fishing gear continues to trap marine life long after it falls overboard, drifting silently through the water.",
       bagTitle: "Plastic Bags & Wrappers",
       bagBody:
-        "Lightweight plastic bags and packaging float through the water column, breaking into smaller pieces that animals mistake for food.",
+        "Lightweight plastic bags and packaging float through the water, breaking into smaller pieces that animals mistake for food.",
       microTitle: "Microplastics",
       microBody:
         "Tiny plastic fragments, smaller than a grain of rice, are now found throughout the North Sea, from surface waters to the seafloor.",
@@ -142,27 +142,27 @@ const en = {
         "Doggerland flooded slowly until around 6,500 BC. Fishermen still dredge up mammoth bones and stone tools from the seabed.",
       hansaTitle: "Medieval trade on a crowded sea",
       hansaBody:
-        "From the 1200s, the Hanseatic League linked ports from Bruges to Bergen. Herring, wool, and grain crossed the North Sea in convoys of cogs, one of Europe's busiest routes long before modern shipping.",
+        "From the 1200s, the Hanseatic League linked ports from Bruges to Bergen. Herring, wool, and grain crossed the North Sea in convoys of merchant ships, one of Europe's busiest routes long before modern shipping.",
       hansaFact:
         "Hanseatic treaties regulated fishing and piracy centuries before today's maritime law.",
       ww1Title: "The First World War at sea",
       ww1Body:
-        "The North Sea became a wall between Britain and Germany. Fleets clashed at Jutland; mines and submarines turned shipping lanes into traps. Coastal towns were shelled, and wrecks and explosives still litter the floor.",
+        "During World War I, the North Sea became a battleground between Britain and Germany. Warships fought major battles, while mines and submarines made sea travel dangerous. Coastal towns came under attack, and even today, shipwrecks and unexploded explosives remain on the seabed.",
       ww1Fact:
         "The Battle of Jutland (1916) was the largest naval battle of the war, fought mainly in the North Sea.",
       ww2Title: "The Second World War beneath the waves",
       ww2Body:
-        "Convoys carried food and fuel under constant U-boat threat. Mines closed coastlines. Dunkirk, blockades, and bombing reshaped ports from Norway to France. Unexploded ordnance is still cleared from fishing grounds today.",
+        "During World War II, the North Sea was once again at the center of conflict. German submarines attacked Allied ships, while naval convoys carried troops, food, and supplies across dangerous waters. The sea also played a key role in major operations, including the D-Day invasion. Thousands of ships, aircraft, and mines were lost, and many still rest on the seabed today.",
       ww2Fact:
         "Operation Dynamo evacuated hundreds of thousands across these waters from Dunkirk in 1940.",
       oilTitle: "Oil beneath the seabed",
       oilBody:
         "Oil strikes from the 1960s transformed the region. Platforms rose off Scotland, Norway, and the Netherlands. New wealth and new disputes over who owns what lies below the waves.",
       oilFact:
-        "The Brent field (1971) became a symbol of the North Sea oil age and lent its name to a global oil price benchmark.",
+        "The Brent oil field, discovered in 1971, helped turn the North Sea into a major source of oil. Its name is still used today as a global benchmark for oil prices.",
       energyTitle: "Wind, climate, and the next chapter",
       energyBody:
-        "Fishing grounds now share space with vast offshore wind farms. Nations debate cables, conservation, and net-zero targets on waters where ancestors once walked. The story of the North Sea is still being written.",
+        "Today, fishing grounds share the North Sea with expanding offshore wind farms. Countries work to balance clean energy, nature, and industry. The North Sea has changed many times throughout history, and its story is still being written.",
       energyFact:
         "The North Sea is set to remain a major hub for renewable power linking seven countries.",
     },
@@ -170,9 +170,9 @@ const en = {
       depthBadge: "↓ 40 m shaping tomorrow's sea",
       label: "06 / Politics & Future",
       title:
-        "Seven nations share this sea and the choices made today will define its future.",
+        "Seven nations share this sea. The choices made today will define its future.",
       instruction:
-        "Explore the map; borders, energy, fishing, and climate plans all collide here.",
+        "Explore the map and discover how countries are shaping the future of the North Sea.",
       filters: {
         all: "All",
         borders: "Borders",
@@ -207,12 +207,12 @@ const en = {
     euQuotas: {
       label: "EU Quotas",
       title: "Common Fisheries Policy",
-      body: "EU member states coordinate fishing limits through the Common Fisheries Policy. Overfishing, bycatch, and fleet subsidies remain politically charged across the region.",
+      body: "Through the EU's Common Fisheries Policy, member states coordinate fishing rules and catch limits. Yet overfishing, bycatch, and financial support for fishing fleets remain topics of debate.",
     },
     dutchWind: {
       label: "Wind",
       title: "Dutch Offshore Wind Expansion",
-      body: "The Netherlands aims to build massive offshore wind capacity in the North Sea as part of EU climate targets, raising questions about sea space allocation and grid connections.",
+      body: "The Netherlands plans to build large offshore wind farms in the North Sea to help meet EU climate goals. As more turbines are added, countries must decide how to share sea space and connect this renewable energy to the power grid.",
     },
     norwayOil: {
       label: "Oil & Gas",
@@ -232,7 +232,7 @@ const en = {
     shipping: {
       label: "Shipping",
       title: "Shipping & Trade Routes",
-      body: "The English Channel and southern North Sea form one of the world's busiest shipping corridors. IMO regulations, port competition, and Brexit customs checks all shape this flow of trade.",
+      body: "The English Channel and southern North Sea are some of the world's busiest shipping routes. Trade is influenced by international regulations, competition between ports, and customs checks introduced after Brexit.",
     },
     maritimeBorders: {
       label: "Borders",
