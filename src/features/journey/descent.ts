@@ -34,12 +34,20 @@ export class DescentController {
 
   private readonly zones: DepthZone[] = [
     { max: 0, labelKey: "above" },
-    { max: 40, labelKey: "surface" },
-    { max: 120, labelKey: "shallow" },
-    { max: 350, labelKey: "open" },
-    { max: 550, labelKey: "deep" },
-    { max: 700, labelKey: "seafloor" },
+    { max: 5, labelKey: "surface" },
+    { max: 20, labelKey: "shallow" },
+    { max: 35, labelKey: "open" },
+    { max: 40, labelKey: "seafloor" },
   ];
+
+  private readonly deepLayerIds = new Set([
+    "nature",
+    "pollution",
+    "infrastructure",
+    "history",
+    "politics",
+    "finale",
+  ]);
 
   private readonly _onMouseMove: (e: MouseEvent) => void;
 
@@ -47,7 +55,7 @@ export class DescentController {
     private readonly ocean: OceanAnimation,
     options: DescentControllerOptions = {},
   ) {
-    this.maxMeters = options.maxMeters ?? 700;
+    this.maxMeters = options.maxMeters ?? 40;
     this.layers = [...document.querySelectorAll<HTMLElement>("[data-layer]")];
     this.depthHud = document.getElementById("depth-hud");
     this.depthValue = document.getElementById("depth-value");
@@ -109,6 +117,36 @@ export class DescentController {
     return best;
   }
 
+  /** Depth from scroll position — avoids resets when the active layer flickers. */
+  private getMetersFromScroll(): number {
+    const vh = window.innerHeight;
+    const focusY = vh * 0.5;
+    let meters = 0;
+
+    for (const layer of this.layers) {
+      const rect = layer.getBoundingClientRect();
+      const start = parseFloat(layer.dataset.metersStart ?? "0");
+      const end = parseFloat(layer.dataset.metersEnd ?? "0");
+
+      if (rect.bottom < 0) {
+        meters = Math.max(meters, end);
+        continue;
+      }
+
+      if (rect.top > vh) break;
+
+      if (rect.top <= focusY && rect.bottom >= focusY) {
+        meters = Math.max(meters, this.getMetersAtProgress(layer));
+      } else if (rect.top > focusY) {
+        meters = Math.max(meters, start);
+      } else {
+        meters = Math.max(meters, end);
+      }
+    }
+
+    return Math.min(this.maxMeters, meters);
+  }
+
   private getZoneLabel(meters: number): string {
     for (const zone of this.zones) {
       if (meters <= zone.max) {
@@ -125,12 +163,13 @@ export class DescentController {
     this.lastScrollY = scrollY;
 
     const active = this.getActiveSection();
-    this.meters = this.getMetersAtProgress(active);
+    const activeLayerId = active.dataset.layer || "intro";
+    this.meters = this.getMetersFromScroll();
     this.smoothMeters += (this.meters - this.smoothMeters) * 0.08;
 
-    const activeLayerId = active.dataset.layer || "intro";
     const isSurfaceLayer = activeLayerId === "surface";
     const isIntro = activeLayerId === "intro";
+    const isDeepLayer = this.deepLayerIds.has(activeLayerId);
 
     const surfaceLayer = this.layers.find((l) => l.dataset.layer === "surface");
     const natureLayer = this.layers.find((l) => l.dataset.layer === "nature");
@@ -147,6 +186,11 @@ export class DescentController {
         this.smoothstep(0.08 + natureProg * 0.92),
       );
     }
+    if (isDeepLayer && activeLayerId !== "nature") {
+      submerge = 1;
+    } else if (this.meters >= 8) {
+      submerge = Math.max(submerge, 1);
+    }
 
     this.smoothSubmerge += (submerge - this.smoothSubmerge) * 0.045;
     const submergeEase = this.smoothSubmerge;
@@ -156,7 +200,8 @@ export class DescentController {
       Math.min(1, this.smoothMeters / this.maxMeters),
     );
 
-    const isUnderwater = submergeEase > 0.48 || this.smoothMeters > 35;
+    const isUnderwater =
+      submergeEase > 0.48 || this.smoothMeters > 2 || isDeepLayer;
 
     document.documentElement.style.setProperty(
       "--descent",

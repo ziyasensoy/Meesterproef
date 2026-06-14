@@ -21,13 +21,13 @@ const en = {
     descending: "Descending ↓",
     atDepth: "At depth",
     surfaceMarker: "Surface",
-    floorMarker: "700 m",
+    floorMarker: "40 m",
     layerLabels: {
       intro: "At the surface",
       surface: "Layer 01 · At the surface",
-      nature: "Layer 02 · Descent begins",
-      pollution: "Layer 03 · Mid depth",
-      infrastructure: "Layer 04 · Deep floor",
+      nature: "Layer 02 · Marine life",
+      pollution: "Layer 03 · Human traces",
+      infrastructure: "Layer 04 · Seabed",
       history: "Layer 05 · Through time",
       politics: "Layer 06 · Politics & future",
       finale: "Finale · Still at depth",
@@ -37,7 +37,7 @@ const en = {
     title: "The North Sea",
     statCountries: "7 nations",
     statArea: "570,000 km²",
-    statDepth: "700 m deep",
+    statDepth: "40 m deep",
     tagline: "An interactive journey",
     statsAria: "North Sea facts",
     scrollToStart: "Scroll down",
@@ -46,7 +46,7 @@ const en = {
   },
   layers: {
     surface: {
-      depthBadge: "↓ ~40 m you break through the surface",
+      depthBadge: "↓ at the surface",
       label: "01 / Surface",
       title:
         "Above the surface, the North Sea is one of Europe's busiest regions.",
@@ -61,7 +61,7 @@ const en = {
         "For decades, offshore platforms have extracted fossil fuels from beneath the seabed, shaping the region's economy.",
     },
     nature: {
-      depthBadge: "↓ ~120 m life in the shallows",
+      depthBadge: "↓ ~15 m life in the shallows",
       label: "02 / Life Below",
       title: "A living ecosystem thrives beneath the waves.",
       hint: "Click the animals, each one holds a story.",
@@ -79,7 +79,7 @@ const en = {
         "Herring form enormous shoals that migrate through the North Sea in seasonal cycles. These silvery fish have sustained fishing communities for centuries and remain a cornerstone of the marine food chain.",
     },
     pollution: {
-      depthBadge: "↓ ~250 m human traces appear",
+      depthBadge: "↓ ~30 m human traces appear",
       label: "03 / Traces",
       title: "Human activity leaves traces beneath the surface.",
       hint: "Click the traces, each one holds a story.",
@@ -109,7 +109,7 @@ const en = {
         "Ship engines and construction noise disrupt the communication and navigation of whales, dolphins, and other species.",
     },
     infrastructure: {
-      depthBadge: "↓ ~400 m, cables on the seafloor",
+      depthBadge: "↓ 40 m, cables on the seafloor",
       label: "04 / Deep Network",
       title:
         "Deep beneath the waves lies an invisible infrastructure connecting countries and powering millions of homes.",
@@ -124,7 +124,7 @@ const en = {
         "An extensive network of pipelines transports natural gas between nations beneath the seabed.",
     },
     history: {
-      depthBadge: "↓ ~550 m stories in the deep",
+      depthBadge: "↓ 40 m stories on the seabed",
       label: "05 / History",
       title: "The North Sea holds thousands of years of history.",
       hint:
@@ -161,7 +161,7 @@ const en = {
         "The North Sea is set to remain a major hub for renewable power linking seven countries.",
     },
     politics: {
-      depthBadge: "↓ ~650 m shaping tomorrow's sea",
+      depthBadge: "↓ 40 m shaping tomorrow's sea",
       label: "06 / Politics & Future",
       title:
         "Seven nations share this sea and the choices made today will define its future.",
@@ -178,7 +178,7 @@ const en = {
       },
     },
     finale: {
-      depthBadge: "~700 m still in the deep",
+      depthBadge: "40 m · still on the seabed",
       title: "The North Sea is more than water.",
       line1: "A source of energy.",
       line2: "A route for trade.",

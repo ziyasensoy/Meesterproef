@@ -7,7 +7,7 @@ export default function DepthHud() {
         </span>
         <div className="depth-hud__line" />
         <span className="depth-hud__floor" data-i18n="dive.floorMarker">
-          700 m
+          40 m
         </span>
       </div>
       <div className="depth-hud__info">

@@ -140,8 +140,8 @@ export default function JourneyPage() {
               className="layer layer--surface layer--surface-open layer--offset-right"
               data-layer="surface"
               data-speed="1"
-              data-meters-start="5"
-              data-meters-end="40"
+              data-meters-start="0"
+              data-meters-end="0"
             >
               <span className="layer-num" aria-hidden="true">01</span>
               <div className="layer__content">
@@ -191,8 +191,8 @@ export default function JourneyPage() {
               className="layer layer--nature layer--offset-left"
               data-layer="nature"
               data-speed="0.8"
-              data-meters-start="40"
-              data-meters-end="120"
+              data-meters-start="0"
+              data-meters-end="20"
             >
               <span className="layer-num" aria-hidden="true">02</span>
               <div className="layer__visuals" aria-hidden="true">
@@ -369,8 +369,8 @@ export default function JourneyPage() {
               className="layer layer--pollution layer--offset-right"
               data-layer="pollution"
               data-speed="0.7"
-              data-meters-start="120"
-              data-meters-end="250"
+              data-meters-start="20"
+              data-meters-end="35"
             >
               <span className="layer-num" aria-hidden="true">03</span>
               <div className="layer__visuals" aria-hidden="true">
@@ -407,8 +407,8 @@ export default function JourneyPage() {
               className="layer layer--infrastructure layer--offset-left"
               data-layer="infrastructure"
               data-speed="0.5"
-              data-meters-start="250"
-              data-meters-end="400"
+              data-meters-start="35"
+              data-meters-end="40"
             >
               <span className="layer-num" aria-hidden="true">04</span>
               <div className="layer__visuals" aria-hidden="true">
@@ -499,8 +499,8 @@ export default function JourneyPage() {
               className="layer layer--history layer--history-interactive"
               data-layer="history"
               data-speed="0.65"
-              data-meters-start="400"
-              data-meters-end="550"
+              data-meters-start="40"
+              data-meters-end="40"
             >
               <span className="layer-num" aria-hidden="true">05</span>
               <HistoryInteractive />
@@ -511,8 +511,8 @@ export default function JourneyPage() {
               className="layer layer--map layer--future"
               data-layer="politics"
               data-speed="0.85"
-              data-meters-start="550"
-              data-meters-end="650"
+              data-meters-start="40"
+              data-meters-end="40"
             >
               <span className="layer-num" aria-hidden="true">06</span>
               <div className="layer__content layer__content--map">
@@ -625,8 +625,8 @@ export default function JourneyPage() {
               className="layer layer--finale layer--finale-exp"
               data-layer="finale"
               data-speed="0.3"
-              data-meters-start="650"
-              data-meters-end="700"
+              data-meters-start="40"
+              data-meters-end="40"
             >
               <div className="layer__content layer__content--centered">
                 <h2
