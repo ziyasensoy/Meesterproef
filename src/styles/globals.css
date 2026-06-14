@@ -828,15 +828,30 @@ body[data-layer="intro"] {
   position: absolute;
   top: clamp(1.25rem, 4vw, 2.5rem);
   right: clamp(1.25rem, 5vw, 3rem);
-  width: clamp(72px, 10vw, 100px);
-  opacity: 0.75;
-  animation: introCompassSpin 48s linear infinite;
+  width: clamp(84px, 11vw, 112px);
+  padding: 0.45rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(10, 50, 78, 0.22);
+  box-shadow:
+    0 8px 28px rgba(5, 25, 45, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 6px rgba(5, 25, 45, 0.15));
 }
 
 .intro-compass__svg {
   width: 100%;
   height: auto;
   display: block;
+}
+
+.intro-compass__needle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: introCompassSpin 48s linear infinite;
 }
 
 .intro-hero-meta {
@@ -3507,8 +3522,9 @@ body.is-deep {
   }
 
   .intro-compass {
-    width: 56px;
-    opacity: 0.5;
+    width: 72px;
+    padding: 0.35rem;
+    opacity: 0.92;
   }
 
   .depth-hud__layer {

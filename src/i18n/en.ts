@@ -38,7 +38,7 @@ const en = {
     title: "The North Sea",
     statCountries: "7 nations",
     statArea: "575,000 km²",
-    statDepth: "≈ 40 m deep (the Netherlands)",
+    statDepth: "≈ 40 m deep",
     tagline: "An interactive journey",
     statsAria: "North Sea facts",
     scrollToStart: "Scroll down",
