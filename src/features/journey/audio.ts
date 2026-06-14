@@ -1,6 +1,5 @@
 /**
- * Layered ambient audio - seasounds is a dedicated channel (title + layer 1).
- * Other tracks load lazily per layer.
+ * Layered ambient audio - seasounds on intro; layer tracks load lazily per layer.
  */
 import seasoundsUrl from "@/assets/seasounds.mp3";
 import underwaterUrl from "@/assets/underwater.mp3";
@@ -23,7 +22,7 @@ const LAYER_TRACK_URLS: Record<LayerTrackId, string> = {
 
 const TRACK_GAIN: Record<LayerTrackId, number> = {
   underwater: 0.26,
-  layer1: 0.18,
+  layer1: 0.26,
   layer2: 0.09,
   layer3: 0.09,
   layer4: 0.09,
@@ -33,7 +32,7 @@ const SEASOUNDS_GAIN = 0.32;
 const FADE_MS = 650;
 const RELEASE_DELAY_MS = FADE_MS + 250;
 
-const SEASOUNDS_LAYERS = new Set<SceneLayerId>(["intro", "surface"]);
+const SEASOUNDS_LAYERS = new Set<SceneLayerId>(["intro"]);
 
 function isSeasoundsLayer(layer: SceneLayerId): boolean {
   return SEASOUNDS_LAYERS.has(layer);
@@ -46,7 +45,7 @@ interface LayerMix {
 
 const LAYER_MIX: Record<SceneLayerId, LayerMix> = {
   intro: { ambient: null, accent: null },
-  surface: { ambient: null, accent: null },
+  surface: { ambient: "layer1", accent: null },
   nature: { ambient: "underwater", accent: "layer2" },
   pollution: { ambient: "underwater", accent: "layer3" },
   infrastructure: { ambient: "underwater", accent: "layer4" },
