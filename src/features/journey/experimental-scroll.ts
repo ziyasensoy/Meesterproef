@@ -87,11 +87,10 @@ export class ExperimentalScroll {
       }
 
       const scrollNudge = pin.querySelector<HTMLElement>(".intro-scroll-nudge");
-      const hintHide = Math.max(0, Math.min(1, (p - 0.5) / 0.18));
-      for (const el of [scrollNudge]) {
-        if (!el) continue;
-        el.style.opacity = String(1 - hintHide);
-        el.style.visibility = hintHide > 0.98 ? "hidden" : "visible";
+      if (scrollNudge) {
+        const hintHide = Math.max(0, Math.min(1, (p - 0.5) / 0.18));
+        scrollNudge.style.opacity = String(1 - hintHide);
+        scrollNudge.style.visibility = hintHide > 0.98 ? "hidden" : "visible";
       }
 
       if (seagulls) {

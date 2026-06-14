@@ -6,8 +6,8 @@ export class SiteControls {
   private readonly soundBtn: HTMLElement | null;
   private readonly fullscreenBtn: HTMLElement | null;
   private readonly controls: HTMLElement | null;
-  /** Intended audio state — defaults on; only false after explicit mute. */
-  private soundOn = true;
+  /** Sound off until the user clicks Turn on sound. */
+  private userMuted = true;
 
   constructor(private readonly audio: OceanAudio) {
     this.soundBtn = document.getElementById("btn-sound");
@@ -17,7 +17,6 @@ export class SiteControls {
     this.bindEvents();
     this.syncFullscreenState();
     this.applyLabels();
-    this.controls?.classList.add("is-audio-on");
   }
 
   private applyLabels(): void {
@@ -25,7 +24,7 @@ export class SiteControls {
     if (hint) {
       hint.innerHTML = en.controls.audioHint.replace(/\n/g, "<br />");
     }
-    this.updateSoundButton(this.soundOn);
+    this.syncAudioState();
     this.syncFullscreenState();
   }
 
@@ -40,36 +39,39 @@ export class SiteControls {
     );
   }
 
-  async enableSound(): Promise<boolean> {
+  isUserMuted(): boolean {
+    return this.userMuted;
+  }
+
+  async enableSound(): Promise<void> {
+    if (this.userMuted) return;
     await this.audio.enable();
-    this.soundOn = true;
     this.syncAudioState();
-    return true;
   }
 
   async mute(): Promise<void> {
+    this.userMuted = true;
     this.audio.disable();
-    this.soundOn = false;
     this.syncAudioState();
   }
 
   async unmute(): Promise<void> {
+    this.userMuted = false;
     await this.audio.enable();
-    this.soundOn = true;
     this.syncAudioState();
   }
 
   private async toggleSound(): Promise<void> {
-    if (this.soundOn) {
-      await this.mute();
-    } else {
+    if (this.userMuted) {
       await this.unmute();
+    } else {
+      await this.mute();
     }
   }
 
-  /** Keep the button in sync with the intended (unmuted) audio state. */
+  /** Keep the button in sync with the user's mute preference. */
   syncAudioState(): void {
-    const on = this.soundOn;
+    const on = !this.userMuted;
     this.updateSoundButton(on);
     this.controls?.classList.toggle("is-audio-on", on);
   }

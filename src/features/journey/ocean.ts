@@ -75,8 +75,8 @@ export class OceanAnimation {
     this.ctx = context;
 
     this.config = {
-      particleCount: options.particleCount ?? 320,
-      bubbleCount: options.bubbleCount ?? 60,
+      particleCount: options.particleCount ?? 160,
+      bubbleCount: options.bubbleCount ?? 32,
       baseColor: options.baseColor ?? "#7ec8e3",
       deepColor: options.deepColor ?? "#4a9ec4",
       abyssColor: options.abyssColor ?? "#0f2535",
@@ -142,7 +142,7 @@ export class OceanAnimation {
   }
 
   resize(): void {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = window.innerWidth;
     const h = window.innerHeight;
     this.canvas.width = w * dpr;
@@ -182,6 +182,10 @@ export class OceanAnimation {
 
   frame(): void {
     if (!this.running) return;
+    if (document.hidden) {
+      requestAnimationFrame(this._boundFrame);
+      return;
+    }
 
     this.time += 16.67;
     this.depth += (this.targetDepth - this.depth) * 0.06;

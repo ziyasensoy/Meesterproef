@@ -44,17 +44,88 @@ export class LayerObserver {
     this.setActiveLayer(this.pickLayerByViewport(), true);
   }
 
-  private pickLayerByViewport(): LayerId {
-    const vh = window.innerHeight;
+  /** Viewport-centre layer — for visuals / body dataset. */
+  getViewportLayer(): LayerId {
+    return this.pickLayerByViewport();
+  }
+
+  /**
+   * Layer used for audio — document scroll position, not viewport rects.
+   * Intro seasounds only while the scroll focus is inside the intro section.
+   */
+  getAudioLayer(): LayerId {
+    const focus = window.scrollY + window.innerHeight * 0.5;
+    const containing: LayerId[] = [];
+
+    document.querySelectorAll<HTMLElement>("[data-layer]").forEach((section) => {
+      const layer = section.dataset.layer as LayerId | undefined;
+      if (!layer) return;
+
+      const rect = section.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const bottom = top + rect.height;
+      if (focus >= top && focus < bottom) {
+        containing.push(layer);
+      }
+    });
+
+    if (containing.length > 0) {
+      return containing.reduce((best, layer) =>
+        LAYER_ORDER.indexOf(layer) > LAYER_ORDER.indexOf(best) ? layer : best,
+      );
+    }
+
     let best: LayerId = "intro";
+    let bestDistance = Infinity;
+
+    document.querySelectorAll<HTMLElement>("[data-layer]").forEach((section) => {
+      const layer = section.dataset.layer as LayerId | undefined;
+      if (!layer) return;
+
+      const rect = section.getBoundingClientRect();
+      const center = rect.top + window.scrollY + rect.height * 0.5;
+      const distance = Math.abs(center - focus);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        best = layer;
+      }
+    });
+
+    return best;
+  }
+
+  private pickLayerByViewport(skipIntro = false): LayerId {
+    const focusY = window.innerHeight * 0.5;
+    const containing: LayerId[] = [];
+
+    document.querySelectorAll<HTMLElement>("[data-layer]").forEach((section) => {
+      const layer = section.dataset.layer as LayerId | undefined;
+      if (!layer) return;
+      if (skipIntro && section.classList.contains("pin-sequence--intro")) return;
+
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= focusY && rect.bottom >= focusY) {
+        containing.push(layer);
+      }
+    });
+
+    if (containing.length > 0) {
+      return containing.reduce((best, layer) =>
+        LAYER_ORDER.indexOf(layer) > LAYER_ORDER.indexOf(best) ? layer : best,
+      );
+    }
+
+    let best: LayerId = skipIntro ? "surface" : "intro";
     let bestScore = -Infinity;
 
     document.querySelectorAll<HTMLElement>("[data-layer]").forEach((section) => {
       const layer = section.dataset.layer as LayerId | undefined;
       if (!layer) return;
+      if (skipIntro && section.classList.contains("pin-sequence--intro")) return;
+
       const rect = section.getBoundingClientRect();
       const center = rect.top + rect.height / 2;
-      const score = -Math.abs(center - vh / 2);
+      const score = -Math.abs(center - focusY);
       if (score > bestScore) {
         bestScore = score;
         best = layer;

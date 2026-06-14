@@ -1,6 +1,6 @@
 export default function SiteControls() {
   return (
-    <div className="site-controls is-audio-on" id="site-controls">
+    <div className="site-controls" id="site-controls">
       <aside
         className="audio-hint"
         role="note"
@@ -53,7 +53,7 @@ export default function SiteControls() {
           type="button"
           id="btn-sound"
           className="site-btn"
-          aria-pressed={true}
+          aria-pressed={false}
         >
           <svg
             className="site-btn__icon"
@@ -72,7 +72,7 @@ export default function SiteControls() {
               strokeLinecap="round"
             />
           </svg>
-          <span className="btn-label">Sound on</span>
+          <span className="btn-label">Turn on sound</span>
         </button>
         <button
           type="button"

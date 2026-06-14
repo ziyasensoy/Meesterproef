@@ -14,7 +14,6 @@ import {
   ScrollReveal,
   SiteControls,
 } from "@/features/journey";
-import type { LayerId } from "@/types/journey";
 import { applyTranslations } from "@/i18n/applyTranslations";
 
 export function useExperience(): void {
@@ -32,33 +31,22 @@ export function useExperience(): void {
     const layerObserver = new LayerObserver();
     layerObserver.init();
 
-    void siteControls.enableSound();
-
-    const unlockAudio = (): void => {
-      void oceanAudio.unlockFromGesture().then(() => {
-        siteControls.syncAudioState();
-      });
-    };
-    const unlockOpts = { once: true, passive: true } as const;
-    document.addEventListener("pointerdown", unlockAudio, unlockOpts);
-    document.addEventListener("touchstart", unlockAudio, unlockOpts);
-    document.addEventListener("keydown", unlockAudio, { once: true });
-    window.addEventListener("scroll", unlockAudio, unlockOpts);
-
-    layerObserver.onChange((layer) => {
-      oceanAudio.setLayerFromObserver(layer);
-    });
-
-    const descent = new DescentController(ocean);
     const experimental = new ExperimentalScroll();
+    const descent = new DescentController(ocean);
 
-    const scrollProgress = new ScrollProgress((progress, scrollY) => {
+    const syncAudioLayer = (): void => {
+      oceanAudio.forceSyncLayer(layerObserver.getAudioLayer());
+    };
+
+    const scrollProgress = new ScrollProgress((_progress, scrollY) => {
       experimental.update();
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
       descent.update(scrollY, progress);
       updatePaletteFromScroll();
       layerObserver.syncFromScroll();
-      const layer = (document.body.dataset.layer || "intro") as LayerId;
-      oceanAudio.forceSyncLayer(layer);
+      syncAudioLayer();
     });
 
     const scrollReveal = new ScrollReveal();
@@ -72,16 +60,14 @@ export function useExperience(): void {
     document.body.dataset.layer = "intro";
     experimental.update();
     updatePaletteFromScroll();
+    syncAudioLayer();
 
     return () => {
-      document.removeEventListener("pointerdown", unlockAudio);
-      document.removeEventListener("touchstart", unlockAudio);
-      document.removeEventListener("keydown", unlockAudio);
-      window.removeEventListener("scroll", unlockAudio);
       scrollProgress.destroy();
       scrollReveal.destroy();
       layerObserver.destroy();
       ocean.destroy();
+      oceanAudio.destroy();
       descent.destroy();
       mapController.destroy();
       siteControls.destroy();
