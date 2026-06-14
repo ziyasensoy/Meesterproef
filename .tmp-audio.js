@@ -163,7 +163,7 @@ export class OceanAudio {
     this.nodes.waterGain.connect(this.nodes.master);
     waterNoise.start();
 
-    // Gentle wave wash — slow rolling swell (surface layer)
+    // Gentle wave wash - slow rolling swell (surface layer)
     this.nodes.waveWashFilter = ctx.createBiquadFilter();
     this.nodes.waveWashFilter.type = 'lowpass';
     this.nodes.waveWashFilter.frequency.value = 420;
@@ -209,7 +209,7 @@ export class OceanAudio {
     this.nodes.subGain.connect(this.nodes.master);
     this.nodes.subOsc.start();
 
-    // Pulse — cable energy
+    // Pulse - cable energy
     this.nodes.pulseAmp = ctx.createGain();
     this.nodes.pulseOsc = ctx.createOscillator();
     this.nodes.pulseOsc.type = 'triangle';

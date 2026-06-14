@@ -1,5 +1,5 @@
 /**
- * Layered ambient audio — seasounds is a dedicated channel (title + layer 1).
+ * Layered ambient audio - seasounds is a dedicated channel (title + layer 1).
  * Other tracks load lazily per layer.
  */
 import seasoundsUrl from "@/assets/seasounds.mp3";
@@ -83,7 +83,7 @@ function activeTracksForLayer(layer: SceneLayerId): Set<LayerTrackId> {
   return active;
 }
 
-/** Preloaded at construction — never destroyed until OceanAudio.destroy(). */
+/** Preloaded at construction - never destroyed until OceanAudio.destroy(). */
 class SeasoundsChannel {
   private readonly element: HTMLAudioElement;
   private gain: GainNode | null = null;
@@ -159,7 +159,7 @@ class SeasoundsChannel {
 }
 
 export class OceanAudio {
-  /** Created immediately — MP3 begins loading before any user interaction. */
+  /** Created immediately - MP3 begins loading before any user interaction. */
   private readonly seasounds = new SeasoundsChannel(seasoundsUrl);
 
   private ctx: AudioContext | null = null;

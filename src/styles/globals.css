@@ -1,5 +1,5 @@
 /* ============================================
-   North Sea Scrollytelling — Styles
+   North Sea Scrollytelling - Styles
    ============================================ */
 
 :root {
@@ -1610,7 +1610,7 @@ body.is-deep {
   transform: none !important;
 }
 
-/* Surface fact cards — high contrast over open water */
+/* Surface fact cards - high contrast over open water */
 .layer--surface .fact-card {
   background: rgba(72, 145, 195, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.28);
@@ -1639,7 +1639,7 @@ body.is-deep {
   border-color: rgba(255, 255, 255, 0.38);
 }
 
-/* Horizon assets — on the wave line */
+/* Horizon assets - on the wave line */
 
 .surface-horizon__assets .ship,
 .surface-horizon__assets .wind-farm,
@@ -1835,10 +1835,63 @@ body.is-deep {
 }
 
 .hotspot--fish {
-  top: 40%;
-  left: 30%;
+  top: 44%;
+  left: 44%;
+  right: auto;
   width: clamp(80px, 12vw, 120px);
+  z-index: 4;
   animation: fishSwim 6s ease-in-out infinite;
+}
+
+.hotspot--jellyfish {
+  top: 14%;
+  left: 52%;
+  width: clamp(56px, 9vw, 84px);
+  animation: jellyfishDrift 14s ease-in-out infinite;
+}
+
+.hotspot--jellyfish .jellyfish__svg {
+  animation: jellyfishPulse 4s ease-in-out infinite;
+}
+
+.hotspot--plankton {
+  bottom: 30%;
+  left: 40%;
+  width: clamp(90px, 14vw, 130px);
+  animation: planktonFloat 11s ease-in-out infinite;
+}
+
+@keyframes jellyfishDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-2deg);
+  }
+  35% {
+    transform: translate(28px, -22px) rotate(1deg);
+  }
+  70% {
+    transform: translate(-18px, 14px) rotate(-3deg);
+  }
+}
+
+@keyframes jellyfishPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes planktonFloat {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(16px, -10px);
+  }
 }
 
 .hotspot svg {
@@ -2259,7 +2312,7 @@ body.is-deep {
   background: transparent;
 }
 
-/* Pollution hotspots — spread across viewport, kept left of title column (~52vw+) */
+/* Pollution hotspots - spread across viewport, kept left of title column (~52vw+) */
 .hotspot--pollution {
   z-index: 3;
   pointer-events: auto;
@@ -2992,7 +3045,7 @@ body.is-deep {
   --pin-color: #89cff0;
 }
 
-/* Leaflet map popups — compact, on-map only */
+/* Leaflet map popups - compact, on-map only */
 .map-leaflet-popup .leaflet-popup-content-wrapper {
   background: rgba(10, 28, 42, 0.94);
   border: 1px solid rgba(126, 200, 227, 0.22);
@@ -3058,6 +3111,14 @@ body.is-deep {
   color: var(--color-text-muted);
   line-height: 1.2;
   letter-spacing: -0.02em;
+}
+
+.finale-line--question {
+  margin-top: 0.75rem;
+  font-size: clamp(4rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #7ec8e3;
+  text-shadow: 0 0 40px rgba(126, 200, 227, 0.35);
 }
 
 .finale-thanks {
@@ -3338,8 +3399,21 @@ body.is-deep {
     bottom: 10%;
   }
   .hotspot--fish {
-    left: 20%;
-    top: 35%;
+    left: 38%;
+    right: auto;
+    top: 40%;
+  }
+
+  .hotspot--jellyfish {
+    left: 54%;
+    top: 10%;
+    width: clamp(48px, 14vw, 72px);
+  }
+
+  .hotspot--plankton {
+    left: 32%;
+    bottom: 26%;
+    width: clamp(80px, 22vw, 110px);
   }
 
   .fact-grid {

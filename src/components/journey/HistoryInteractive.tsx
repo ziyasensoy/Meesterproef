@@ -141,7 +141,7 @@ export default function HistoryInteractive() {
           data-scrub="slide-left"
           data-i18n="layers.history.hint"
         >
-          Choose a chapter in time — from a walkable plain to the wars and industries
+          Choose a chapter in time - from a walkable plain to the wars and industries
           that followed.
         </p>
       </header>

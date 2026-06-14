@@ -115,7 +115,7 @@ export class MapController {
 
     L.tileLayer(config.map.imageryUrl, {
       attribution:
-        "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
+        "Tiles &copy; Esri - Source: Esri, Maxar, Earthstar Geographics",
       maxZoom: config.map.tileMaxZoom,
     }).addTo(this.map);
 

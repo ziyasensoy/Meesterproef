@@ -1,5 +1,5 @@
 /**
- * Reusable animated ocean background — flowing streak particles with camera drift.
+ * Reusable animated ocean background - flowing streak particles with camera drift.
  */
 
 export interface OceanAnimationOptions {

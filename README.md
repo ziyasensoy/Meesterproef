@@ -1,4 +1,4 @@
-# The North Sea — An Interactive Journey
+# The North Sea - An Interactive Journey
 
 Scroll-driven interactive experience about the North Sea, built with **React**, **TypeScript**, **Vite**, and canvas / scroll / audio engines.
 
@@ -24,7 +24,7 @@ Open the URL shown in the terminal (usually http://localhost:5173).
 
 The site is built for [https://ziyasensoy.github.io/Meesterproef/](https://ziyasensoy.github.io/Meesterproef/).
 
-1. Push to `main` — the [Deploy to GitHub Pages](.github/workflows/deploy.yml) workflow builds and publishes automatically.
+1. Push to `main` - the [Deploy to GitHub Pages](.github/workflows/deploy.yml) workflow builds and publishes automatically.
 2. In the repo on GitHub: **Settings → Pages → Build and deployment → Source** → choose **GitHub Actions**.
 3. After the first successful run, the site is live at the URL above.
 

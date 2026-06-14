@@ -77,6 +77,12 @@ const en = {
       herringTitle: "North Sea Herring",
       herringBody:
         "Herring form enormous shoals that migrate through the North Sea in seasonal cycles. These silvery fish have sustained fishing communities for centuries and remain a cornerstone of the marine food chain.",
+      jellyfishTitle: "Compass Jellyfish",
+      jellyfishBody:
+        "Compass jellyfish drift through North Sea waters in summer and autumn, pulsing gently with the currents. Their stinging tentacles capture tiny fish and plankton, making them both predator and prey in the shallow food web.",
+      planktonTitle: "Plankton",
+      planktonBody:
+        "Microscopic phytoplankton and zooplankton drift in sunlit surface waters, forming the foundation of the North Sea food chain. Every fish, whale, and seabird here ultimately depends on these tiny organisms.",
     },
     pollution: {
       depthBadge: "↓ ~30 m human traces appear",
@@ -183,7 +189,7 @@ const en = {
       line1: "A source of energy.",
       line2: "A route for trade.",
       line3: "A home for wildlife.",
-      line4: "What kind of North Sea do we want to leave behind?",
+      line4: "What does the North Sea mean to you?",
       thanks: "Thank you for exploring the North Sea.",
     },
   },

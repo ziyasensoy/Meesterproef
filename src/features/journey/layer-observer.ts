@@ -44,13 +44,13 @@ export class LayerObserver {
     this.setActiveLayer(this.pickLayerByViewport(), true);
   }
 
-  /** Viewport-centre layer — for visuals / body dataset. */
+  /** Viewport-centre layer - for visuals / body dataset. */
   getViewportLayer(): LayerId {
     return this.pickLayerByViewport();
   }
 
   /**
-   * Layer used for audio — document scroll position, not viewport rects.
+   * Layer used for audio - document scroll position, not viewport rects.
    * Intro seasounds only while the scroll focus is inside the intro section.
    */
   getAudioLayer(): LayerId {

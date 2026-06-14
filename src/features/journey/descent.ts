@@ -117,7 +117,7 @@ export class DescentController {
     return best;
   }
 
-  /** Depth from scroll position — avoids resets when the active layer flickers. */
+  /** Depth from scroll position - avoids resets when the active layer flickers. */
   private getMetersFromScroll(): number {
     const vh = window.innerHeight;
     const focusY = vh * 0.5;

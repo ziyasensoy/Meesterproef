@@ -20,7 +20,7 @@ export default function JourneyPage() {
       <JourneyChrome />
 
       <main className="journey">
-            {/* INTRO — pinned experimental sequence */}
+            {/* INTRO - pinned experimental sequence */}
             <section
               className="pin-sequence pin-sequence--intro"
               style={{ "--pin-vh": 300 } as CSSProperties}
@@ -135,7 +135,7 @@ export default function JourneyPage() {
               </div>
             </section>
       
-            {/* LAYER 1 — SURFACE */}
+            {/* LAYER 1 - SURFACE */}
             <section
               className="layer layer--surface layer--surface-open layer--offset-right"
               data-layer="surface"
@@ -186,7 +186,7 @@ export default function JourneyPage() {
               </div>
             </section>
       
-            {/* LAYER 2 — ANIMALS AND NATURE */}
+            {/* LAYER 2 - ANIMALS AND NATURE */}
             <section
               className="layer layer--nature layer--offset-left"
               data-layer="nature"
@@ -197,6 +197,100 @@ export default function JourneyPage() {
               <span className="layer-num" aria-hidden="true">02</span>
               <div className="layer__visuals" aria-hidden="true">
                 <div className="scene scene--underwater" data-reveal-stagger>
+                  {/* Jellyfish */}
+                  <button
+                    className="hotspot hotspot--jellyfish"
+                    data-hotspot
+                    data-i18n-hotspot="jellyfish"
+                    data-reveal-child
+                    data-title="Compass Jellyfish"
+                    data-body="Compass jellyfish drift through North Sea waters in summer and autumn, pulsing gently with the currents. Their stinging tentacles capture tiny fish and plankton, making them both predator and prey in the shallow food web."
+                    aria-label="Learn about compass jellyfish"
+                  >
+                    <svg
+                      className="illustration animal animal--jellyfish jellyfish__svg"
+                      viewBox="0 0 80 120"
+                      fill="none"
+                    >
+                      <ellipse
+                        cx="40"
+                        cy="32"
+                        rx="28"
+                        ry="22"
+                        fill="rgba(200, 150, 230, 0.35)"
+                      />
+                      <ellipse
+                        cx="40"
+                        cy="36"
+                        rx="16"
+                        ry="12"
+                        fill="rgba(230, 190, 255, 0.28)"
+                      />
+                      <path
+                        d="M22 52 Q18 78 20 108"
+                        stroke="rgba(200, 160, 235, 0.45)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M32 54 Q28 82 30 112"
+                        stroke="rgba(210, 170, 240, 0.4)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M40 56 Q40 85 40 115"
+                        stroke="rgba(200, 160, 235, 0.5)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M48 54 Q52 82 50 110"
+                        stroke="rgba(210, 170, 240, 0.4)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M58 52 Q62 76 58 104"
+                        stroke="rgba(200, 160, 235, 0.45)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span className="hotspot-pulse"></span>
+                  </button>
+
+                  {/* Plankton */}
+                  <button
+                    className="hotspot hotspot--plankton"
+                    data-hotspot
+                    data-i18n-hotspot="plankton"
+                    data-reveal-child
+                    data-title="Plankton"
+                    data-body="Microscopic phytoplankton and zooplankton drift in sunlit surface waters, forming the foundation of the North Sea food chain. Every fish, whale, and seabird here ultimately depends on these tiny organisms."
+                    aria-label="Learn about plankton"
+                  >
+                    <svg
+                      className="illustration animal animal--plankton"
+                      viewBox="0 0 120 80"
+                    >
+                      <circle cx="18" cy="28" r="3" fill="rgba(160, 230, 200, 0.85)" />
+                      <circle cx="32" cy="18" r="2" fill="rgba(200, 245, 225, 0.75)" />
+                      <circle cx="44" cy="34" r="2.5" fill="rgba(140, 210, 190, 0.8)" />
+                      <circle cx="58" cy="22" r="2" fill="rgba(180, 240, 210, 0.7)" />
+                      <circle cx="70" cy="38" r="3" fill="rgba(160, 230, 200, 0.85)" />
+                      <circle cx="26" cy="48" r="2" fill="rgba(200, 245, 225, 0.75)" />
+                      <circle cx="40" cy="56" r="2.5" fill="rgba(140, 210, 190, 0.8)" />
+                      <circle cx="54" cy="50" r="2" fill="rgba(180, 240, 210, 0.7)" />
+                      <circle cx="66" cy="58" r="2.5" fill="rgba(160, 230, 200, 0.85)" />
+                      <circle cx="82" cy="30" r="2" fill="rgba(200, 245, 225, 0.75)" />
+                      <circle cx="90" cy="46" r="3" fill="rgba(140, 210, 190, 0.8)" />
+                      <circle cx="12" cy="52" r="1.5" fill="rgba(180, 240, 210, 0.65)" />
+                      <circle cx="76" cy="14" r="1.5" fill="rgba(160, 230, 200, 0.65)" />
+                    </svg>
+                    <span className="hotspot-pulse"></span>
+                  </button>
+
                   {/* Seal */}
                   <button
                     className="hotspot hotspot--seal"
@@ -359,12 +453,12 @@ export default function JourneyPage() {
                   data-scrub="slide-left"
                   data-i18n="layers.nature.hint"
                 >
-                  Click the creatures — each one holds a story.
+                  Click the creatures - each one holds a story.
                 </p>
               </div>
             </section>
       
-            {/* LAYER 3 — POLLUTION */}
+            {/* LAYER 3 - POLLUTION */}
             <section
               className="layer layer--pollution layer--offset-right"
               data-layer="pollution"
@@ -397,12 +491,12 @@ export default function JourneyPage() {
                   data-scrub="slide-left"
                   data-i18n="layers.pollution.hint"
                 >
-                  Click the traces on the left — each one holds a story.
+                  Click the traces on the left - each one holds a story.
                 </p>
               </div>
             </section>
       
-            {/* LAYER 4 — CABLES AND PIPELINES */}
+            {/* LAYER 4 - CABLES AND PIPELINES */}
             <section
               className="layer layer--infrastructure layer--offset-left"
               data-layer="infrastructure"
@@ -494,7 +588,7 @@ export default function JourneyPage() {
               </div>
             </section>
       
-            {/* LAYER 5 — HISTORY (interactive timeline) */}
+            {/* LAYER 5 - HISTORY (interactive timeline) */}
             <section
               className="layer layer--history layer--history-interactive"
               data-layer="history"
@@ -506,7 +600,7 @@ export default function JourneyPage() {
               <HistoryInteractive />
             </section>
 
-            {/* LAYER 6 — POLITICS & FUTURE (MAP) */}
+            {/* LAYER 6 - POLITICS & FUTURE (MAP) */}
             <section
               className="layer layer--map layer--future"
               data-layer="politics"
@@ -529,7 +623,7 @@ export default function JourneyPage() {
                   data-scrub="blur-in"
                   data-i18n="layers.politics.title"
                 >
-                  Seven nations share this sea — and the choices made today will
+                  Seven nations share this sea - and the choices made today will
                   define its future.
                 </h2>
                 <p
@@ -537,7 +631,7 @@ export default function JourneyPage() {
                   data-scrub="slide-left"
                   data-i18n="layers.politics.instruction"
                 >
-                  Explore the map — borders, energy, fishing, and climate plans all
+                  Explore the map - borders, energy, fishing, and climate plans all
                   collide here.
                 </p>
               </div>
@@ -647,8 +741,12 @@ export default function JourneyPage() {
                   <p className="finale-line" data-reveal-child data-i18n="layers.finale.line3">
                     A home for wildlife.
                   </p>
-                  <p className="finale-line" data-reveal-child data-i18n="layers.finale.line4">
-                    <b>What kind of North Sea do we want to leave behind?</b>
+                  <p
+                    className="finale-line finale-line--question"
+                    data-reveal-child
+                    data-i18n="layers.finale.line4"
+                  >
+                    What does the North Sea mean to you?
                   </p>
                 </div>
                 <p className="finale-thanks" data-reveal data-i18n="layers.finale.thanks">

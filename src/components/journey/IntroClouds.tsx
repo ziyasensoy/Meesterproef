@@ -1,4 +1,4 @@
-/** Clouds in the upper sky only — kept away from the title area. */
+/** Clouds in the upper sky only  kept away from the title area. */
 export default function IntroClouds() {
   return (
     <div className="intro-clouds" aria-hidden="true">

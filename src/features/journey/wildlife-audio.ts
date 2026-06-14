@@ -1,5 +1,5 @@
 /**
- * Procedural wildlife sounds — seagulls & fish.
+ * Procedural wildlife sounds - seagulls & fish.
  */
 
 const WILDLIFE_VOLUME = 0.62;

@@ -1,4 +1,4 @@
-/** Layer 3 — floating debris hotspots (left of the title column). */
+/** Layer 3 - floating debris hotspots (left of the title column). */
 export default function PollutionScene() {
   return (
     <div className="scene scene--pollution" data-reveal-stagger>
