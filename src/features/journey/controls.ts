@@ -22,7 +22,12 @@ export class SiteControls {
   private applyLabels(): void {
     const hint = document.querySelector<HTMLElement>(".audio-hint__text");
     if (hint) {
-      hint.innerHTML = en.controls.audioHint.replace(/\n/g, "<br />");
+      const lines = en.controls.audioHint.split("\n");
+      const cta = lines.pop();
+      const lead = lines.join("<br />");
+      hint.innerHTML = cta
+        ? `${lead}<br /><span class="audio-hint__cta">${cta}</span>`
+        : en.controls.audioHint.replace(/\n/g, "<br />");
     }
     this.syncAudioState();
     this.syncFullscreenState();

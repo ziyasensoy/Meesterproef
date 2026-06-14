@@ -46,6 +46,10 @@ export default function SiteControls() {
           This site uses audio
           <br />
           Headphones are recommended.
+          <br />
+          <span className="audio-hint__cta">
+            Turn on sound with the button below.
+          </span>
         </p>
       </aside>
       <div className="site-controls__actions">

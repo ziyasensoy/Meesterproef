@@ -1044,12 +1044,12 @@ body[data-layer="intro"] {
   align-items: flex-start;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
-  background: rgba(10, 40, 70, 0.35);
+  background: rgba(8, 32, 54, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(137, 207, 240, 0.25);
+  border: 1px solid rgba(100, 165, 205, 0.42);
   border-radius: 6px;
-  color: #c5e8f7;
+  color: #dceef8;
 }
 
 .audio-hint__icon {
@@ -1061,10 +1061,18 @@ body[data-layer="intro"] {
 
 .audio-hint__text {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   line-height: 1.55;
   letter-spacing: 0.03em;
-  color: rgba(200, 230, 250, 0.85);
+  color: rgba(228, 242, 252, 0.96);
+}
+
+.audio-hint__cta {
+  display: block;
+  margin-top: 0.45rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #fff;
 }
 
 /* ---- Site controls (bottom-right) ---- */
@@ -1122,6 +1130,35 @@ body[data-layer="intro"] {
   background: rgba(137, 207, 240, 0.15);
   border-color: rgba(137, 207, 240, 0.55);
   color: #89cff0;
+}
+
+.site-controls:not(.is-audio-on) #btn-sound {
+  border-color: rgba(137, 207, 240, 0.72);
+  background: rgba(16, 52, 88, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(137, 207, 240, 0.28),
+    0 6px 22px rgba(5, 25, 45, 0.45);
+  animation: soundBtnNudge 2.4s ease-in-out infinite;
+}
+
+.site-controls:not(.is-audio-on) #btn-sound .site-btn__icon-waves {
+  opacity: 0.85;
+}
+
+@keyframes soundBtnNudge {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow:
+      0 0 0 1px rgba(137, 207, 240, 0.28),
+      0 6px 22px rgba(5, 25, 45, 0.45);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px rgba(137, 207, 240, 0.45),
+      0 8px 26px rgba(5, 25, 45, 0.55);
+  }
 }
 
 .site-btn__icon {
@@ -1446,13 +1483,18 @@ body.is-deep {
 .layer-label {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-accent);
   margin-bottom: 1.25rem;
   will-change: transform, opacity;
+}
+
+.layer--surface .layer-label {
+  color: #0a4568;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 /* ---- Scroll Reveal ---- */
@@ -1836,7 +1878,7 @@ body.is-deep {
 
 .hotspot--fish {
   top: 44%;
-  left: 44%;
+  left: 50%;
   right: auto;
   width: clamp(80px, 12vw, 120px);
   z-index: 4;
@@ -3399,7 +3441,7 @@ body.is-deep {
     bottom: 10%;
   }
   .hotspot--fish {
-    left: 38%;
+    left: 44%;
     right: auto;
     top: 40%;
   }

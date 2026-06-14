@@ -476,7 +476,7 @@ export default function JourneyPage() {
                   data-scrub="slide-left"
                   data-i18n="layers.pollution.label"
                 >
-                  03 / Traces
+                  03 / Human Traces
                 </span>
                 <h2
                   className="title-section"

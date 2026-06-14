@@ -4,7 +4,8 @@ const en = {
     mapLegend: "Map categories",
   },
   controls: {
-    audioHint: "This site uses audio\nHeadphones are recommended.",
+    audioHint:
+      "This site uses audio\nHeadphones are recommended.\nTurn on sound with the button below.",
     soundOn: "Mute",
     soundMuted: "Turn on sound",
     fullscreen: "Fullscreen",
